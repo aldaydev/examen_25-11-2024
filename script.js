@@ -54,6 +54,12 @@ function renderProduct(section, data, type){
     productImg.setAttribute('src', data.image);
     productContainer.appendChild(productImg);
 
+    //Creamos id
+    const productId = document.createElement('span');
+    productId.classList.add('productId');
+    productId.textContent = `Product ID: ${data.id}`;
+    productContainer.appendChild(productId);
+
     //Creamos title
     const productTitle = document.createElement('h3');
     productTitle.classList.add('productTitle');
@@ -66,12 +72,6 @@ function renderProduct(section, data, type){
     productCategory.textContent = `Category: ${data.category}`;
     productContainer.appendChild(productCategory);
 
-    //Creamos id
-    const productId = document.createElement('span');
-    productId.classList.add('productId');
-    productId.textContent = `ID: ${data.id}`;
-    productContainer.appendChild(productId);
-
     //Creamos description
     const productDescription = document.createElement('p');
     productDescription.classList.add('productDescription');
@@ -79,7 +79,7 @@ function renderProduct(section, data, type){
     productContainer.appendChild(productDescription);
 
     //Creamos precio
-    const productPrice = document.createElement('p');
+    const productPrice = document.createElement('span');
     productPrice.classList.add('productPrice');
     productPrice.textContent = `Price: ${data.price}€`;
     productContainer.appendChild(productPrice);
@@ -135,10 +135,18 @@ function loadCart() {
         cartSection.innerHTML = '';
     }
     //Añadimos título a la sección del carrito
+    const cartHeader = document.createElement('div');
+    cartHeader.classList.add('cartHeader');
+    cartSection.appendChild(cartHeader);
     const cartTitle = document.createElement('h2');
     cartTitle.classList.add('cartTitle');
     cartTitle.textContent = 'CART';
-    cartSection.appendChild(cartTitle);
+    cartHeader.appendChild(cartTitle);
+    const buyBtn = document.createElement('button');
+    buyBtn.classList.add('buyBtn');
+    buyBtn.setAttribute('onclick', 'buyProducts()');
+    buyBtn.textContent = 'BUY SELECTED';
+    cartHeader.appendChild(buyBtn);
 
     //Añadimos la sección cart al main
     main.appendChild(cartSection);
@@ -159,7 +167,6 @@ function loadCart() {
 function deleteFromCart(data, section, container){
     //Lo eliminamos de localStorage
     localStorage.removeItem(data.id);
-    console.log(section.children);
     //Si es el único producto que hay en el carrito (más el título), borramos la sección entera
     if(section.children.length == 2){
         const main = document.getElementById('main');
@@ -170,7 +177,15 @@ function deleteFromCart(data, section, container){
     }
 }
 
-
+//Si compramos los productos en el carrito
+function buyProducts(){
+    //Alerta de confirmación
+    alert ('All products bought');
+    //Limpiamos localStorage
+    localStorage.clear();
+    //Recargamos la página
+    location.reload();
+}
 
 
 
