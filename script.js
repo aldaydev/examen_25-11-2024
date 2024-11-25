@@ -11,8 +11,10 @@
             let data = await response.json();
             //Mostramos todos los productos
             showProducts(data);
-            //Cargamos el carrito por si había algo en localStorage previamente
-            loadCart();
+            //Si hay algo en localStorage (carrito), lo recuperamos
+            if(localStorage.length > 0){
+                loadCart();
+            }
         }
     }catch(error){
         alert(error);
@@ -113,7 +115,7 @@ function renderProduct(section, data, type){
 
 //Al añadir un producto al carrito
 function addToCart(product){
-    //Metemos la info del producto en localStorage
+    //Metemos la info del producto en localStorage (La clave será la ID del producto)
     localStorage[product.id] = JSON.stringify(product);
     //Actualizamos el carrito
     loadCart();
@@ -121,6 +123,7 @@ function addToCart(product){
 
 //Mostrar los elementos que haya en el carrito
 function loadCart() {
+    
     //Seleccionamos la sección del carrito
     let cartSection = document.querySelector('.cartSection');
     //Si la sección del carrito no existe, la creamos
@@ -146,7 +149,7 @@ function loadCart() {
         if (!isNaN(key)) {
             //Recogemos la data del producto que guardamos en localStorage
             const product = JSON.parse(localStorage.getItem(key));
-            //Renderizamos el producto (con type 'cart' para cambiar el botón)
+            //Renderizamos el producto (con type 'cart' para asociarlo al carrito);
             renderProduct(cartSection, product, 'cart');
         }
     }
